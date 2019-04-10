@@ -73,17 +73,44 @@ namespace MittSpel_Sebastian
             // TODO: Add your update logic here
             int windowWidth = Window.ClientBounds.Width;
             int windowHeight = Window.ClientBounds.Height;
-            
+            /*
             if (myship_pos.X > windowWidth - myship.Width || myship_pos.X < 0)
             {
                 myship_speed.X *= -1;
             }
+            if (myship_pos.Y > windowHeight - myship.Height || myship_pos.Y  < 0)
+            {
+                myship_speed.Y*= -1;
+            }*/
+
+            if (myship_pos.X > windowWidth - myship.Width || myship_pos.X < 0)
+            {
+                myship_speed.X = 0;
+            }
             if (myship_pos.Y > windowHeight - myship.Height || myship_pos.Y < 0)
             {
-                myship_speed.Y *= -1;
+                myship_speed.Y = 0;
             }
 
-            myship_pos += myship_speed;
+            KeyboardState Key = Keyboard.GetState();
+
+            if (Key.IsKeyDown(Keys.Right))
+            {
+                myship_pos.X += myship_speed.X;
+            }
+            if (Key.IsKeyDown(Keys.Left))
+            {
+                myship_pos.X -= myship_speed.X;
+            }
+            if (Key.IsKeyDown(Keys.Up))
+            {
+                myship_pos.Y -= myship_speed.Y;
+            }
+            if (Key.IsKeyDown(Keys.Down))
+            {
+                myship_pos.Y += myship_speed.Y;
+            }
+            // myship_pos += myship_speed;
             base.Update(gameTime);
         }
 
