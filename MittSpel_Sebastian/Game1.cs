@@ -33,6 +33,7 @@ namespace MittSpel_Sebastian
             myship_pos.X = 100;
             myship_pos.Y = 100;
             myship_speed.X = 2.5f;
+            myship_speed.Y = 2.5f;
             base.Initialize();
         }
 
@@ -71,10 +72,15 @@ namespace MittSpel_Sebastian
 
             // TODO: Add your update logic here
             int windowWidth = Window.ClientBounds.Width;
-            int shipWidth = 44;
-            if (myship_pos.X > windowWidth - shipWidth || myship_pos.X < 0)
+            int windowHeight = Window.ClientBounds.Height;
+            
+            if (myship_pos.X > windowWidth - myship.Width || myship_pos.X < 0)
             {
-                myship_speed *= -1;
+                myship_speed.X *= -1;
+            }
+            if (myship_pos.Y > windowHeight - myship.Height || myship_pos.Y < 0)
+            {
+                myship_speed.Y *= -1;
             }
 
             myship_pos += myship_speed;
