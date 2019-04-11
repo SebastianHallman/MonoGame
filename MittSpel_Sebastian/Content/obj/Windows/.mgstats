@@ -1,2 +1,3 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"//fs1.ad.ssis.nu/17seha/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/ship.png","//fs1.ad.ssis.nu/17seha/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/bin/Windows/ship.xnb","TextureProcessor","Texture2DContent",3474,9941,0,2428281
+"//fs1.ad.ssis.nu/17seha/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/Sprites/coin.png","//fs1.ad.ssis.nu/17seha/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/bin/Windows/Sprites/coin.xnb","TextureProcessor","Texture2DContent",6515,13537,0,261652
+"//fs1.ad.ssis.nu/17seha/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/Sprites/ship.png","//fs1.ad.ssis.nu/17seha/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/bin/Windows/Sprites/ship.xnb","TextureProcessor","Texture2DContent",3474,9941,0,1630581

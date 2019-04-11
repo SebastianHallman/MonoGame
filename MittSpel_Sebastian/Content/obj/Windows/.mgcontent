@@ -4,9 +4,12 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
+    <File>//fs1.ad.ssis.nu/17seha/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/Sprites/coin.png</File>
+    <File>//fs1.ad.ssis.nu/17seha/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/Sprites/ship.png</File>
     <File>//fs1.ad.ssis.nu/17seha/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/ship.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
   </DestFiles>
 </SourceFileCollection>

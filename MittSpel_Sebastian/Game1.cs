@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
 
 namespace MittSpel_Sebastian
 {
@@ -14,7 +16,15 @@ namespace MittSpel_Sebastian
         Texture2D myship;
         Vector2 myship_pos;
         Vector2 myship_speed;
+        Texture2D coin;
+        Vector2 coin_pos;
+        Texture2D tripod;
+        Vector2 tripod_pos;
+        Vector2 tripod_speed;
 
+        List<Vector2> coin_pos_list = new List<Vector2>();
+        List<Vector2> tripod_pos_list = new List<Vector2>();
+        List<Vector2> tripod_speed_list = new List<Vector2>();
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -30,10 +40,36 @@ namespace MittSpel_Sebastian
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            myship_pos.X = 100;
-            myship_pos.Y = 100;
+
+            int windowWidth = Window.ClientBounds.Width;
+            int windowHeight = Window.ClientBounds.Height;
+
+            myship_pos.X = windowWidth / 2;
+            myship_pos.Y = windowHeight - 100;
             myship_speed.X = 2.5f;
             myship_speed.Y = 2.5f;
+            tripod_speed.X = 1f;
+            
+
+            for (int i = 0; i < 5; i++)
+            {
+                tripod_speed_list.Add(tripod_speed);
+            }
+            Random random = new Random();
+
+            for (int i = 0; i < 5; i++)
+            {
+                coin_pos.X = random.Next(0, windowWidth - 50);
+                coin_pos.Y = random.Next(0, windowHeight - 50);
+                coin_pos_list.Add(coin_pos);
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                tripod_pos.X = random.Next(0, windowWidth - 50);
+                tripod_pos.Y = random.Next(0, windowHeight / 2);
+                tripod_pos_list.Add(tripod_pos);
+            }
             base.Initialize();
         }
 
@@ -48,7 +84,8 @@ namespace MittSpel_Sebastian
 
             // TODO: use this.Content to load your game content here
             myship = Content.Load<Texture2D>("ship");
-
+            coin = Content.Load<Texture2D>("Sprites/coin");
+            tripod = Content.Load<Texture2D>("Sprites/tripod");
         }
 
         /// <summary>
@@ -111,6 +148,20 @@ namespace MittSpel_Sebastian
                 myship_pos.Y += myship_speed.Y;
             }
             // myship_pos += myship_speed;
+            for (int i = 0; i < 5; i++)
+            {
+                float speed = tripod_speed_list[i].X;
+                float pos = tripod_pos_list[i].X;
+
+                if (tripod_pos_list[i].X > windowWidth - tripod.Width || tripod_pos_list[i].X < 0)
+                {
+                    // float speed = tripod_speed_list[i].X;
+
+                     speed *= -1;
+                }
+                 pos += speed;
+            }
+            
             base.Update(gameTime);
         }
 
@@ -125,6 +176,14 @@ namespace MittSpel_Sebastian
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             spriteBatch.Draw(myship, myship_pos, Color.White);
+            foreach(Vector2 c in coin_pos_list){
+                spriteBatch.Draw(coin, c, Color.White);
+            }
+
+            foreach (Vector2 t_pos in tripod_pos_list)
+            {
+                spriteBatch.Draw(tripod, t_pos, Color.White);
+            }
             spriteBatch.End();
             base.Draw(gameTime);
         }
