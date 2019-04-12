@@ -25,6 +25,12 @@
 /processorParam:TextureFormat=Color
 /build:ship.png
 
+#begin Sounds/yehaw.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/yehaw.wav
+
 #begin Sprites/coin.png
 /importer:TextureImporter
 /processor:TextureProcessor

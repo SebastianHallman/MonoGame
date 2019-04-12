@@ -5,11 +5,13 @@
   <Config />
   <SourceFiles>
     <File>Z:/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/ship.png</File>
+    <File>Z:/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/Sounds/yehaw.wav</File>
     <File>Z:/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/Sprites/coin.png</File>
     <File>Z:/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/Sprites/ship.png</File>
     <File>Z:/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/Sprites/tripod.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

@@ -23,3 +23,4 @@
 \\fs1.ad.ssis.nu\17seha\Documents\GitHub\MonoGame\MonoGame\MittSpel_Sebastian\obj\x86\Debug\MittSpel_Sebastian.pdb
 \\fs1.ad.ssis.nu\17seha\Documents\GitHub\MonoGame\MonoGame\MittSpel_Sebastian\bin\Windows\x86\Debug\Content\Sprites\coin.xnb
 \\fs1.ad.ssis.nu\17seha\Documents\GitHub\MonoGame\MonoGame\MittSpel_Sebastian\bin\Windows\x86\Debug\Content\Sprites\tripod.xnb
+\\fs1.ad.ssis.nu\17seha\Documents\GitHub\MonoGame\MonoGame\MittSpel_Sebastian\bin\Windows\x86\Debug\Content\Sounds\yehaw.xnb

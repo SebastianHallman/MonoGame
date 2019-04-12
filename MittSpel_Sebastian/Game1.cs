@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MittSpel_Sebastian
 {
@@ -21,10 +23,23 @@ namespace MittSpel_Sebastian
         Texture2D tripod;
         Vector2 tripod_pos;
         Vector2 tripod_speed;
+        Rectangle rec_myship;
+        Rectangle rec_coin;
+        bool hit;
+        SoundEffect myshout;
+        bool shout = false;
+        
 
         List<Vector2> coin_pos_list = new List<Vector2>();
         List<Vector2> tripod_pos_list = new List<Vector2>();
         List<Vector2> tripod_speed_list = new List<Vector2>();
+
+        // Funktion som kontrollerar kollision mellan 2 objekt
+        public bool CheckCollision(Rectangle player, Rectangle mynt)
+        {
+            return player.Intersects(mynt);
+        }
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -48,8 +63,9 @@ namespace MittSpel_Sebastian
             myship_pos.Y = windowHeight - 100;
             myship_speed.X = 2.5f;
             myship_speed.Y = 2.5f;
-            tripod_speed.X = 1f;
-            
+            // tripod_speed.X = 1f;
+            tripod_speed.Y = 1f;
+
 
             for (int i = 0; i < 5; i++)
             {
@@ -70,6 +86,8 @@ namespace MittSpel_Sebastian
                 tripod_pos.Y = random.Next(0, windowHeight / 2);
                 tripod_pos_list.Add(tripod_pos);
             }
+
+            
             base.Initialize();
         }
 
@@ -86,6 +104,7 @@ namespace MittSpel_Sebastian
             myship = Content.Load<Texture2D>("ship");
             coin = Content.Load<Texture2D>("Sprites/coin");
             tripod = Content.Load<Texture2D>("Sprites/tripod");
+            myshout = Content.Load<SoundEffect>("Sounds/yehaw");
         }
 
         /// <summary>
@@ -150,17 +169,35 @@ namespace MittSpel_Sebastian
             // myship_pos += myship_speed;
             for (int i = 0; i < 5; i++)
             {
-                float speed = tripod_speed_list[i].X;
-                float pos = tripod_pos_list[i].X;
+                
+                tripod_pos_list[i] += tripod_speed_list[i];
+                
 
-                if (tripod_pos_list[i].X > windowWidth - tripod.Width || tripod_pos_list[i].X < 0)
-                {
-                    // float speed = tripod_speed_list[i].X;
-
-                     speed *= -1;
-                }
-                 pos += speed;
+                
+                
             }
+
+            rec_myship = new Rectangle(Convert.ToInt32(myship_pos.X), Convert.ToInt32(myship_pos.Y), myship.Width, myship.Height);
+
+            
+            foreach(Vector2 cn in coin_pos_list.ToList())
+            {
+                rec_coin=new Rectangle(Convert.ToInt32(cn.X),Convert.ToInt32(cn.Y), coin.Width,coin.Height);
+                hit = CheckCollision(rec_myship, rec_coin);
+                if(hit==true)
+                {
+                    coin_pos_list.Remove(cn);
+                    hit = false;
+                }
+            }
+
+            if (coin_pos_list.Count == 0 && shout == false)
+            {
+                myshout.Play();
+                shout = false;
+            }
+
+
             
             base.Update(gameTime);
         }
