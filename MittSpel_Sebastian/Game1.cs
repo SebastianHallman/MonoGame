@@ -21,18 +21,25 @@ namespace MittSpel_Sebastian
         Texture2D coin;
         Vector2 coin_pos;
         Texture2D tripod;
+        Texture2D bullet;
         Vector2 tripod_pos;
         Vector2 tripod_speed;
         Rectangle rec_myship;
         Rectangle rec_coin;
+        Rectangle rec_tripod;
+        Rectangle rec_bullet;
         bool hit;
         SoundEffect myshout;
         bool shout = false;
-        
+        bool shoot = false;
+
+        Vector2 bullet_speed;
 
         List<Vector2> coin_pos_list = new List<Vector2>();
         List<Vector2> tripod_pos_list = new List<Vector2>();
         List<Vector2> tripod_speed_list = new List<Vector2>();
+        List<Vector2> ammo = new List<Vector2>();
+
 
         // Funktion som kontrollerar kollision mellan 2 objekt
         public bool CheckCollision(Rectangle player, Rectangle mynt)
@@ -66,6 +73,7 @@ namespace MittSpel_Sebastian
             // tripod_speed.X = 1f;
             tripod_speed.Y = 1f;
 
+            bullet_speed.Y = -5f;
 
             for (int i = 0; i < 5; i++)
             {
@@ -87,7 +95,11 @@ namespace MittSpel_Sebastian
                 tripod_pos_list.Add(tripod_pos);
             }
 
-            
+            for (int i = 0; i < 3; i++)
+            {
+                ammo.Add(myship_pos);
+            }
+
             base.Initialize();
         }
 
@@ -105,6 +117,7 @@ namespace MittSpel_Sebastian
             coin = Content.Load<Texture2D>("Sprites/coin");
             tripod = Content.Load<Texture2D>("Sprites/tripod");
             myshout = Content.Load<SoundEffect>("Sounds/yehaw");
+            bullet = Content.Load<Texture2D>("Sprites/bullet");
         }
 
         /// <summary>
@@ -166,8 +179,13 @@ namespace MittSpel_Sebastian
             {
                 myship_pos.Y += myship_speed.Y;
             }
+
+            if (Key.IsKeyDown(Keys.Space))
+            {
+
+            }
             // myship_pos += myship_speed;
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < tripod_pos_list.Count; i++)
             {
                 
                 tripod_pos_list[i] += tripod_speed_list[i];
@@ -182,7 +200,7 @@ namespace MittSpel_Sebastian
             
             foreach(Vector2 cn in coin_pos_list.ToList())
             {
-                rec_coin=new Rectangle(Convert.ToInt32(cn.X),Convert.ToInt32(cn.Y), coin.Width,coin.Height);
+                rec_bullet=new Rectangle(Convert.ToInt32(cn.X),Convert.ToInt32(cn.Y), coin.Width,coin.Height);
                 hit = CheckCollision(rec_myship, rec_coin);
                 if(hit==true)
                 {
@@ -191,15 +209,47 @@ namespace MittSpel_Sebastian
                 }
             }
 
+
+
+            foreach (Vector2 en in tripod_pos_list.ToList())
+            {
+                rec_bullet = new Rectangle(Convert.ToInt32(en.X), Convert.ToInt32(en.Y), bullet.Width, bullet.Height);
+                
+                hit = CheckCollision(rec_myship, rec_bullet);
+                if (hit == true)
+                {
+                    tripod_pos_list.Remove(en);
+                    hit = false;
+                }
+            }
+
             if (coin_pos_list.Count == 0 && shout == false)
             {
                 myshout.Play();
-                shout = false;
+                shout = true;
             }
 
+            if (Key.IsKeyDown(Keys.Space))
+            {
+                
+            for (int i = 0; i < 3; i++)
+            {
+                
+                 ammo.Add(myship_pos);
+                 
+
+                
+            }
+            }
+
+            for (int i = 0; i < ammo.Count; i++)
+                {
+                    ammo[i] += bullet_speed;
+                }
 
             
             base.Update(gameTime);
+           
         }
 
         /// <summary>
@@ -220,6 +270,11 @@ namespace MittSpel_Sebastian
             foreach (Vector2 t_pos in tripod_pos_list)
             {
                 spriteBatch.Draw(tripod, t_pos, Color.White);
+            }
+
+            foreach (Vector2 bullets in ammo)
+            {
+                spriteBatch.Draw(bullet, bullets, Color.White);
             }
             spriteBatch.End();
             base.Draw(gameTime);
