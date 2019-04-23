@@ -39,6 +39,7 @@ namespace MittSpel_Sebastian
         List<Vector2> tripod_pos_list = new List<Vector2>();
         List<Vector2> tripod_speed_list = new List<Vector2>();
         List<Vector2> ammo = new List<Vector2>();
+        List<Rectangle> bullets_col = new List<Rectangle>();
 
 
         // Funktion som kontrollerar kollision mellan 2 objekt
@@ -200,8 +201,12 @@ namespace MittSpel_Sebastian
             
             foreach(Vector2 cn in coin_pos_list.ToList())
             {
-                rec_bullet=new Rectangle(Convert.ToInt32(cn.X),Convert.ToInt32(cn.Y), coin.Width,coin.Height);
+                rec_coin =new Rectangle(Convert.ToInt32(cn.X),Convert.ToInt32(cn.Y), coin.Width,coin.Height);
                 hit = CheckCollision(rec_myship, rec_coin);
+
+                
+
+                
                 if(hit==true)
                 {
                     coin_pos_list.Remove(cn);
@@ -213,14 +218,18 @@ namespace MittSpel_Sebastian
 
             foreach (Vector2 en in tripod_pos_list.ToList())
             {
-                rec_bullet = new Rectangle(Convert.ToInt32(en.X), Convert.ToInt32(en.Y), bullet.Width, bullet.Height);
-                
-                hit = CheckCollision(rec_myship, rec_bullet);
-                if (hit == true)
+                rec_tripod = new Rectangle(Convert.ToInt32(en.X), Convert.ToInt32(en.Y), tripod.Width, tripod.Height);
+                for (int i = 0; i < bullets_col.Count; i++)
                 {
-                    tripod_pos_list.Remove(en);
-                    hit = false;
+                    
+                    hit = CheckCollision(bullets_col[i], rec_tripod);
+                    if (hit == true)
+                    {
+                        tripod_pos_list.Remove(en);
+                        hit = false;
+                    }
                 }
+
             }
 
             if (coin_pos_list.Count == 0 && shout == false)
@@ -236,7 +245,12 @@ namespace MittSpel_Sebastian
             {
                 
                  ammo.Add(myship_pos);
-                 
+
+                 for (int g = 0; g < ammo.Count; g++)
+                    {
+                        Rectangle bullet_rec = new Rectangle(Convert.ToInt32(ammo[g].X), Convert.ToInt32(ammo[g].Y), bullet.Width, bullet.Height);
+                        bullets_col.Add(bullet_rec);
+                    }
 
                 
             }
@@ -245,9 +259,22 @@ namespace MittSpel_Sebastian
             for (int i = 0; i < ammo.Count; i++)
                 {
                     ammo[i] += bullet_speed;
-                }
 
-            
+                     if (ammo[i].Y < 0)
+                    {
+                        ammo.RemoveAt(i);
+                       
+                    }
+
+                
+
+            }
+            bullets_col.RemoveRange(0, bullets_col.Count);
+            for (int i = 0; i < ammo.Count; i++)
+            {
+                Rectangle bullet_col = new Rectangle(Convert.ToInt32(ammo[i].X), Convert.ToInt32(ammo[i].Y), bullet.Width, bullet.Height);
+                bullets_col.Add(bullet_col);
+            }
             base.Update(gameTime);
            
         }
