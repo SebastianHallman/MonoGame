@@ -32,12 +32,15 @@ namespace MittSpel_Sebastian
         SoundEffect myshout;
         bool shout = false;
         bool shoot = false;
-
+        SpriteFont gameFont;
+        
+        int fire_rate = 0;
+        int poang = 0;
         Vector2 bullet_speed;
 
         List<Vector2> coin_pos_list = new List<Vector2>();
         List<Vector2> tripod_pos_list = new List<Vector2>();
-        List<Vector2> tripod_speed_list = new List<Vector2>();
+    
         List<Vector2> ammo = new List<Vector2>();
         List<Rectangle> bullets_col = new List<Rectangle>();
 
@@ -69,17 +72,14 @@ namespace MittSpel_Sebastian
 
             myship_pos.X = windowWidth / 2;
             myship_pos.Y = windowHeight - 100;
-            myship_speed.X = 2.5f;
-            myship_speed.Y = 2.5f;
+            myship_speed.X = 5f;
+            myship_speed.Y = 5f;
             // tripod_speed.X = 1f;
             tripod_speed.Y = 1f;
 
             bullet_speed.Y = -5f;
 
-            for (int i = 0; i < 5; i++)
-            {
-                tripod_speed_list.Add(tripod_speed);
-            }
+            
             Random random = new Random();
 
             for (int i = 0; i < 5; i++)
@@ -119,6 +119,7 @@ namespace MittSpel_Sebastian
             tripod = Content.Load<Texture2D>("Sprites/tripod");
             myshout = Content.Load<SoundEffect>("Sounds/yehaw");
             bullet = Content.Load<Texture2D>("Sprites/bullet");
+            gameFont = Content.Load<SpriteFont>("Utskrift/gamefont");
         }
 
         /// <summary>
@@ -153,14 +154,25 @@ namespace MittSpel_Sebastian
                 myship_speed.Y*= -1;
             }*/
 
-            if (myship_pos.X > windowWidth - myship.Width || myship_pos.X < 0)
+            if (myship_pos.X > windowWidth - myship.Width)
             {
-                myship_speed.X = 0;
+                myship_pos.X = windowWidth - myship.Width;
             }
-            if (myship_pos.Y > windowHeight - myship.Height || myship_pos.Y < 0)
+
+            if (myship_pos.X < 0 )
             {
-                myship_speed.Y = 0;
+                myship_pos.X = 0;
             }
+            if (myship_pos.Y > windowHeight - myship.Height)
+            {
+                myship_pos.Y = windowHeight - myship.Height;
+            }
+
+            if (myship_pos.Y < 0)
+            {
+                myship_pos.Y = 0;
+            }
+
 
             KeyboardState Key = Keyboard.GetState();
 
@@ -189,7 +201,7 @@ namespace MittSpel_Sebastian
             for (int i = 0; i < tripod_pos_list.Count; i++)
             {
                 
-                tripod_pos_list[i] += tripod_speed_list[i];
+                tripod_pos_list[i] += tripod_speed;
                 
 
                 
@@ -210,6 +222,7 @@ namespace MittSpel_Sebastian
                 if(hit==true)
                 {
                     coin_pos_list.Remove(cn);
+                    poang += 10;
                     hit = false;
                 }
             }
@@ -226,6 +239,7 @@ namespace MittSpel_Sebastian
                     if (hit == true)
                     {
                         tripod_pos_list.Remove(en);
+                        poang += 20;
                         hit = false;
                     }
                 }
@@ -243,14 +257,20 @@ namespace MittSpel_Sebastian
                 
             for (int i = 0; i < 3; i++)
             {
-                
-                 ammo.Add(myship_pos);
-
-                 for (int g = 0; g < ammo.Count; g++)
+                    
+                    if (fire_rate==0)
                     {
-                        Rectangle bullet_rec = new Rectangle(Convert.ToInt32(ammo[g].X), Convert.ToInt32(ammo[g].Y), bullet.Width, bullet.Height);
-                        bullets_col.Add(bullet_rec);
+
+                        for (int g = 0; g < ammo.Count; g++)
+                        {
+                            Rectangle bullet_rec = new Rectangle(Convert.ToInt32(ammo[g].X), Convert.ToInt32(ammo[g].Y), bullet.Width, bullet.Height);
+                            bullets_col.Add(bullet_rec);
+                        }
+                        fire_rate = 5;
+                        ammo.Add(myship_pos);
                     }
+                 
+
 
                 
             }
@@ -275,6 +295,11 @@ namespace MittSpel_Sebastian
                 Rectangle bullet_col = new Rectangle(Convert.ToInt32(ammo[i].X), Convert.ToInt32(ammo[i].Y), bullet.Width, bullet.Height);
                 bullets_col.Add(bullet_col);
             }
+
+            if (fire_rate!=0)
+            {
+                fire_rate--;
+            }
             base.Update(gameTime);
            
         }
@@ -290,6 +315,7 @@ namespace MittSpel_Sebastian
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             spriteBatch.Draw(myship, myship_pos, Color.White);
+            spriteBatch.DrawString(gameFont, "Poäng: " + poang, new Vector2(10, 10), Color.White);
             foreach(Vector2 c in coin_pos_list){
                 spriteBatch.Draw(coin, c, Color.White);
             }
