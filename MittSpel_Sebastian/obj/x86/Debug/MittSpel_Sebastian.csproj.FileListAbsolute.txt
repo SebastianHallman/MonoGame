@@ -26,3 +26,4 @@
 \\fs1.ad.ssis.nu\17seha\Documents\GitHub\MonoGame\MonoGame\MittSpel_Sebastian\bin\Windows\x86\Debug\Content\Sounds\yehaw.xnb
 \\fs1.ad.ssis.nu\17seha\Documents\GitHub\MonoGame\MonoGame\MittSpel_Sebastian\bin\Windows\x86\Debug\Content\Sprites\bullet.xnb
 \\fs1.ad.ssis.nu\17seha\Documents\GitHub\MonoGame\MonoGame\MittSpel_Sebastian\bin\Windows\x86\Debug\Content\Utskrift\gamefont.xnb
+\\fs1.ad.ssis.nu\17seha\Documents\GitHub\MonoGame\MonoGame\MittSpel_Sebastian\bin\Windows\x86\Debug\Content\Sprites\dragon.xnb

@@ -19,6 +19,9 @@ namespace MittSpel_Sebastian
         Vector2 myship_pos;
         Vector2 myship_speed;
         Texture2D coin;
+        Texture2D dragon;
+        Vector2 dragon_pos;
+        Vector2 dragon_speed;
         Vector2 coin_pos;
         Texture2D tripod;
         Texture2D bullet;
@@ -43,6 +46,7 @@ namespace MittSpel_Sebastian
     
         List<Vector2> ammo = new List<Vector2>();
         List<Rectangle> bullets_col = new List<Rectangle>();
+        SpriteEffect minEffekt = SpriteEffects.FlipHorizontally;
 
 
         // Funktion som kontrollerar kollision mellan 2 objekt
@@ -82,6 +86,9 @@ namespace MittSpel_Sebastian
             
             Random random = new Random();
 
+            dragon_pos.X = random.Next(0, windowWidth - 64);
+            dragon_pos.Y = random.Next(0, windowHeight / 2);
+
             for (int i = 0; i < 5; i++)
             {
                 coin_pos.X = random.Next(0, windowWidth - 50);
@@ -101,6 +108,7 @@ namespace MittSpel_Sebastian
                 ammo.Add(myship_pos);
             }
 
+            
             base.Initialize();
         }
 
@@ -120,6 +128,7 @@ namespace MittSpel_Sebastian
             myshout = Content.Load<SoundEffect>("Sounds/yehaw");
             bullet = Content.Load<Texture2D>("Sprites/bullet");
             gameFont = Content.Load<SpriteFont>("Utskrift/gamefont");
+            dragon = Content.Load<Texture2D>("Sprites/dragon");
         }
 
         /// <summary>
@@ -243,6 +252,10 @@ namespace MittSpel_Sebastian
                         hit = false;
                     }
                 }
+                if (en.Y > windowHeight)
+                {
+                    tripod_pos_list.Remove(en);
+                }
 
             }
 
@@ -300,6 +313,22 @@ namespace MittSpel_Sebastian
             {
                 fire_rate--;
             }
+            Random rand = new Random();
+            if (tripod_pos_list.Count == 0)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                  
+
+                    Vector2 newTripod = new Vector2();
+
+                    newTripod.X = rand.Next(0, windowWidth - tripod.Width);
+                    newTripod.Y = rand.Next(-200, 0);
+
+                    tripod_pos_list.Add(newTripod);
+
+                }
+            }
             base.Update(gameTime);
            
         }
@@ -316,7 +345,8 @@ namespace MittSpel_Sebastian
             spriteBatch.Begin();
             spriteBatch.Draw(myship, myship_pos, Color.White);
             spriteBatch.DrawString(gameFont, "Poäng: " + poang, new Vector2(10, 10), Color.White);
-            foreach(Vector2 c in coin_pos_list){
+            spriteBatch.Draw(dragon, dragonPos, null, Color.White, 0.0f, Vector2.Zero, 1f, minEffekt, 0);
+            foreach (Vector2 c in coin_pos_list){
                 spriteBatch.Draw(coin, c, Color.White);
             }
 
