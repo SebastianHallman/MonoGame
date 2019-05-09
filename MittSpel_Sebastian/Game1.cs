@@ -20,7 +20,7 @@ namespace MittSpel_Sebastian
         Vector2 myship_speed;
         Texture2D coin;
         Texture2D dragon;
-        Vector2 dragon_pos;
+        Vector2 dragonPos;
         Vector2 dragon_speed;
         Vector2 coin_pos;
         Texture2D tripod;
@@ -46,7 +46,7 @@ namespace MittSpel_Sebastian
     
         List<Vector2> ammo = new List<Vector2>();
         List<Rectangle> bullets_col = new List<Rectangle>();
-        SpriteEffect minEffekt = SpriteEffects.FlipHorizontally;
+        SpriteEffect minEffekt; 
 
 
         // Funktion som kontrollerar kollision mellan 2 objekt
@@ -86,8 +86,8 @@ namespace MittSpel_Sebastian
             
             Random random = new Random();
 
-            dragon_pos.X = random.Next(0, windowWidth - 64);
-            dragon_pos.Y = random.Next(0, windowHeight / 2);
+            dragonPos.X = random.Next(0, windowWidth - 64);
+            dragonPos.Y = random.Next(0, windowHeight / 2);
 
             for (int i = 0; i < 5; i++)
             {
