@@ -13,12 +13,14 @@ namespace MittSpel_Sebastian
     /// </summary>
     public class Game1 : Game
     {
+        // variabler
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D myship;
         Vector2 myship_pos;
         Vector2 myship_speed;
         Texture2D coin;
+        Texture2D healthpack;
         Texture2D dragon;
         Vector2 dragonPos;
         Vector2 dragon_speed;
@@ -36,7 +38,7 @@ namespace MittSpel_Sebastian
         bool shout = false;
         bool shoot = false;
         SpriteFont gameFont;
-        
+        int health = 100;
         int fire_rate = 0;
         int poang = 0;
         Vector2 bullet_speed;
@@ -45,6 +47,8 @@ namespace MittSpel_Sebastian
         List<Vector2> tripod_pos_list = new List<Vector2>();
     
         List<Vector2> ammo = new List<Vector2>();
+        List<Vector2> healthpacks_pos = new List<Vector2>();
+        List<Rectangle> healthpack_hitbox = new List<Rectangle>();
         List<Rectangle> bullets_col = new List<Rectangle>();
         SpriteEffect minEffekt; 
 
@@ -129,6 +133,7 @@ namespace MittSpel_Sebastian
             bullet = Content.Load<Texture2D>("Sprites/bullet");
             gameFont = Content.Load<SpriteFont>("Utskrift/gamefont");
             dragon = Content.Load<Texture2D>("Sprites/dragon");
+            healthpack = Content.Load<Texture2D>("Sprites/Healthpack");
         }
 
         /// <summary>
@@ -162,7 +167,7 @@ namespace MittSpel_Sebastian
             {
                 myship_speed.Y*= -1;
             }*/
-
+            //Begränsar skeppet till spelytan
             if (myship_pos.X > windowWidth - myship.Width)
             {
                 myship_pos.X = windowWidth - myship.Width;
@@ -181,7 +186,7 @@ namespace MittSpel_Sebastian
             {
                 myship_pos.Y = 0;
             }
-
+            // Spelar input
 
             KeyboardState Key = Keyboard.GetState();
 
@@ -216,7 +221,7 @@ namespace MittSpel_Sebastian
                 
                 
             }
-
+            // kollisioner
             rec_myship = new Rectangle(Convert.ToInt32(myship_pos.X), Convert.ToInt32(myship_pos.Y), myship.Width, myship.Height);
 
             
@@ -236,7 +241,7 @@ namespace MittSpel_Sebastian
                 }
             }
 
-
+            Random r = new Random();
 
             foreach (Vector2 en in tripod_pos_list.ToList())
             {
@@ -245,8 +250,19 @@ namespace MittSpel_Sebastian
                 {
                     
                     hit = CheckCollision(bullets_col[i], rec_tripod);
+                    
                     if (hit == true)
                     {
+                        int dropHealth = 1;
+                        int dropGen = r.Next(0, 10);
+                        if (dropGen == dropHealth)
+                        {
+                            Vector2 hp_pos = new Vector2(en.X, en.Y);
+                            Rectangle hp_rec = new Rectangle(Convert.ToInt32(en.X), Convert.ToInt32(en.Y), healthpack.Width, healthpack.Height);
+                            healthpacks_pos.Add(hp_pos);
+                            healthpack_hitbox.Add(hp_rec);
+
+                        }
                         tripod_pos_list.Remove(en);
                         poang += 20;
                         hit = false;
@@ -259,12 +275,24 @@ namespace MittSpel_Sebastian
 
             }
 
+            foreach (Vector2 en in tripod_pos_list.ToList())
+            {
+                rec_tripod = new Rectangle(Convert.ToInt32(en.X), Convert.ToInt32(en.Y), tripod.Width, tripod.Height);
+                hit = CheckCollision(rec_tripod, rec_myship);
+                if (hit == true)
+                {
+                    tripod_pos_list.Remove(en);
+                    health -= 20;
+                    hit = false;
+                }
+            }
+
             if (coin_pos_list.Count == 0 && shout == false)
             {
                 myshout.Play();
                 shout = true;
             }
-
+            // skjutkod
             if (Key.IsKeyDown(Keys.Space))
             {
                 
@@ -343,13 +371,27 @@ namespace MittSpel_Sebastian
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            spriteBatch.Draw(myship, myship_pos, Color.White);
+            if (health > 0)
+            {
+                spriteBatch.Draw(myship, myship_pos, Color.White);
+            }
+            else
+            {
+                spriteBatch.DrawString(gameFont, "Spelet är slut!", new Vector2(Window.ClientBounds.Width/2, Window.ClientBounds.Height/2), Color.White);
+            }
+            
+            
             spriteBatch.DrawString(gameFont, "Poäng: " + poang, new Vector2(10, 10), Color.White);
-            spriteBatch.Draw(dragon, dragonPos, null, Color.White, 0.0f, Vector2.Zero, 1f, minEffekt, 0);
+            spriteBatch.DrawString(gameFont, "Liv: " + health, new Vector2(10, 30), Color.White);
+            //  spriteBatch.Draw(dragon, dragonPos, null, Color.White, 0.0f, Vector2.Zero, 1f, minEffekt, 0);
             foreach (Vector2 c in coin_pos_list){
                 spriteBatch.Draw(coin, c, Color.White);
             }
 
+            foreach (Vector2 hp in healthpacks_pos)
+            {
+                spriteBatch.Draw(healthpack, hp, Color.White);
+            }
             foreach (Vector2 t_pos in tripod_pos_list)
             {
                 spriteBatch.Draw(tripod, t_pos, Color.White);

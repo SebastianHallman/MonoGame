@@ -9,11 +9,13 @@
     <File>Z:/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/Sprites/bullet.png</File>
     <File>Z:/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/Sprites/coin.png</File>
     <File>Z:/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/Sprites/dragon.png</File>
+    <File>Z:/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/Sprites/Healthpack.png</File>
     <File>Z:/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/Sprites/ship.png</File>
     <File>Z:/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/Sprites/tripod.png</File>
     <File>Z:/Documents/GitHub/MonoGame/MonoGame/MittSpel_Sebastian/Content/Utskrift/gamefont.spritefont</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
