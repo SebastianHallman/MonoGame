@@ -41,6 +41,7 @@ namespace MittSpel_Sebastian
         int health = 100;
         int fire_rate = 0;
         int poang = 0;
+        int tripod_speed_int = 1;
         Vector2 bullet_speed;
 
         List<Vector2> coin_pos_list = new List<Vector2>();
@@ -48,7 +49,7 @@ namespace MittSpel_Sebastian
     
         List<Vector2> ammo = new List<Vector2>();
         List<Vector2> healthpacks_pos = new List<Vector2>();
-        List<Rectangle> healthpack_hitbox = new List<Rectangle>();
+        
         List<Rectangle> bullets_col = new List<Rectangle>();
         SpriteEffect minEffekt; 
 
@@ -83,7 +84,7 @@ namespace MittSpel_Sebastian
             myship_speed.X = 5f;
             myship_speed.Y = 5f;
             // tripod_speed.X = 1f;
-            tripod_speed.Y = 1f;
+            tripod_speed.Y = tripod_speed_int;
 
             bullet_speed.Y = -5f;
 
@@ -186,29 +187,56 @@ namespace MittSpel_Sebastian
             {
                 myship_pos.Y = 0;
             }
-            // Spelar input
 
             KeyboardState Key = Keyboard.GetState();
+            // Spelar input
+            if (health > 0)
+            {
 
-            if (Key.IsKeyDown(Keys.Right))
-            {
-                myship_pos.X += myship_speed.X;
-            }
-            if (Key.IsKeyDown(Keys.Left))
-            {
-                myship_pos.X -= myship_speed.X;
-            }
-            if (Key.IsKeyDown(Keys.Up))
-            {
-                myship_pos.Y -= myship_speed.Y;
-            }
-            if (Key.IsKeyDown(Keys.Down))
-            {
-                myship_pos.Y += myship_speed.Y;
-            }
 
-            if (Key.IsKeyDown(Keys.Space))
-            {
+                if (Key.IsKeyDown(Keys.Right))
+                {
+                    myship_pos.X += myship_speed.X;
+                }
+                if (Key.IsKeyDown(Keys.Left))
+                {
+                    myship_pos.X -= myship_speed.X;
+                }
+                if (Key.IsKeyDown(Keys.Up))
+                {
+                    myship_pos.Y -= myship_speed.Y;
+                }
+                if (Key.IsKeyDown(Keys.Down))
+                {
+                    myship_pos.Y += myship_speed.Y;
+                }
+
+                // skjutkod
+                if (Key.IsKeyDown(Keys.Space))
+                {
+
+                    for (int i = 0; i < 3; i++)
+                    {
+
+                        if (fire_rate == 0)
+                        {
+
+                            for (int g = 0; g < ammo.Count; g++)
+                            {
+                                Rectangle bullet_rec = new Rectangle(Convert.ToInt32(ammo[g].X), Convert.ToInt32(ammo[g].Y), bullet.Width, bullet.Height);
+                                bullets_col.Add(bullet_rec);
+                            }
+                            fire_rate = 5;
+
+                            Vector2 new_bullet = new Vector2(myship_pos.X + (myship.Width / 2), myship_pos.Y);
+                            ammo.Add(new_bullet);
+                        }
+
+
+
+
+                    }
+                }
 
             }
             // myship_pos += myship_speed;
@@ -260,14 +288,36 @@ namespace MittSpel_Sebastian
                             Vector2 hp_pos = new Vector2(en.X, en.Y);
                             Rectangle hp_rec = new Rectangle(Convert.ToInt32(en.X), Convert.ToInt32(en.Y), healthpack.Width, healthpack.Height);
                             healthpacks_pos.Add(hp_pos);
-                            healthpack_hitbox.Add(hp_rec);
+                            
 
                         }
+                        
                         tripod_pos_list.Remove(en);
                         poang += 20;
                         hit = false;
                     }
                 }
+                foreach (Vector2 hp in healthpacks_pos.ToList())
+                {
+                    Rectangle hp_hitbox = new Rectangle(Convert.ToInt32(hp.X), Convert.ToInt32(hp.Y), healthpack.Width, healthpack.Height);
+
+                    hit = CheckCollision(rec_myship, hp_hitbox);
+                    if (hit)
+                    {
+                        if (health < 100)
+                        {
+                            healthpacks_pos.Remove(hp);
+                            health += 20;
+
+                            if (health > 100)
+                            {
+                                health = 100;
+                            }
+                        }
+                    }
+
+                }
+                
                 if (en.Y > windowHeight)
                 {
                     tripod_pos_list.Remove(en);
@@ -280,7 +330,7 @@ namespace MittSpel_Sebastian
                 rec_tripod = new Rectangle(Convert.ToInt32(en.X), Convert.ToInt32(en.Y), tripod.Width, tripod.Height);
                 hit = CheckCollision(rec_tripod, rec_myship);
                 if (hit == true)
-                {
+                 {
                     tripod_pos_list.Remove(en);
                     health -= 20;
                     hit = false;
@@ -292,31 +342,7 @@ namespace MittSpel_Sebastian
                 myshout.Play();
                 shout = true;
             }
-            // skjutkod
-            if (Key.IsKeyDown(Keys.Space))
-            {
-                
-            for (int i = 0; i < 3; i++)
-            {
-                    
-                    if (fire_rate==0)
-                    {
-
-                        for (int g = 0; g < ammo.Count; g++)
-                        {
-                            Rectangle bullet_rec = new Rectangle(Convert.ToInt32(ammo[g].X), Convert.ToInt32(ammo[g].Y), bullet.Width, bullet.Height);
-                            bullets_col.Add(bullet_rec);
-                        }
-                        fire_rate = 5;
-                        ammo.Add(myship_pos);
-                    }
-                 
-
-
-                
-            }
-            }
-
+            
             for (int i = 0; i < ammo.Count; i++)
                 {
                     ammo[i] += bullet_speed;
